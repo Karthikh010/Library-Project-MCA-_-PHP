@@ -45,6 +45,34 @@
     }
 </style>
 <body>
+<?php
+     $con = Mysqli_Connect("localhost","root","","library_management");
+     if(!$con){
+         echo "Connection Error !!";
+     }
+
+		$res=mysqli_query($con,"select * from book_details order by book_id desc limit 1");
+		while($result=mysqli_fetch_array($res)){
+		    $book_id =$result['book_id']; 
+		    $book_id++;		
+		}
+        	
+    if(isset($_POST['submit'])){
+		$book_name = $_POST['book_name'];  
+        $book_author = $_POST['book_author'];  
+        $book_edition = $_POST['book_edition'];  
+        $book_publisher = $_POST['book_publisher'];
+
+        $query = "insert into book_details values('$book_id','$book_name','$book_author','$book_edition','$book_publisher',0)";
+            if(mysqli_query($con,$query)){
+                header("location:view_book.php");
+            }
+            else{
+                echo "error".$query.mysqli_error($con);
+            }
+    }
+?>
+
     
     <form name="form" action="#" method="POST">
         <table>
@@ -52,8 +80,10 @@
                 <th colspan="2" style="text-align:center">ADD BOOK DETAILS</th>
             </tr>
             <tr>
+			
+			
                 <th>ID</th>
-                <td><input type="text" name="book_id"> </td>
+                <td> <input readonly type="text" name="book_id" value="<?php echo $book_id;?>"> </td>
             </tr>
             <tr>
                 <th>NAME</th>
@@ -76,28 +106,6 @@
             </tr>
         </table>
     </form>
-<?php
-     $con = Mysqli_Connect("localhost","root","","library_management");
-     if(!$con){
-         echo "Connection Error !!";
-     }
-
-    if(isset($_POST['submit'])){
-        $book_id = $_POST['book_id'];  
-        $book_name = $_POST['book_name'];  
-        $book_author = $_POST['book_author'];  
-        $book_edition = $_POST['book_edition'];  
-        $book_publisher = $_POST['book_publisher'];
-
-        $query = "insert into book_details values('$book_id','$book_name','$book_author','$book_edition','$book_publisher')";
-            if(mysqli_query($con,$query)){
-                echo "success";
-            }
-            else{
-                echo "error".$query.mysqli_error($con);
-            }
-    }
-?>
    
 </body>
 </html>

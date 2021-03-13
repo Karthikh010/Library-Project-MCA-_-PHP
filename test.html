@@ -20,3 +20,15 @@ user and to display the search results with proper headings.
 	.
 	</body>
 	</html>
+
+
+$result = mysqli_query($con, "SELECT * FROM book_details ORDER BY book_id DESC LIMIT 1");
+
+while($res = mysqli_fetch_array($result)){
+    $bookid=$res['book_id'];
+}
+$bookid++;
+?>
+
+<th>ID</th>
+<td><input readonly type="text" name="book_id" value="<?php echo $bookid;?>"> </td>
